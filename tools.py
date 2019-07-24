@@ -36,6 +36,7 @@ class Tools(object):
         }
         drives = self.cli.physicaldrives()
         ret['num'] = len(drives)
+        slot_num_to_sn = self.slot_num_to_sn()
         for drive in drives:
             ret['pds'][drive['device_id']] = {
                 'firmware_state': drive['firmware_state'],
@@ -45,6 +46,7 @@ class Tools(object):
                 'media_type': drive['media_type'],
                 'path': self.get_pd_path(drive),
                 'ld_id': self.get_pd_raid_info(drive),
+                'serial': slot_num_to_sn.get(drive['slot_number']),
             }
         return ret
 
@@ -164,10 +166,17 @@ class Tools(object):
                         }
                 ret['devices'][dev.serial] = {
                     'path': dev.path,
-                    'serial': dev.serial,
                     'assessment': dev.assessment,
                     'attributes': attributes,
                 }
+        return ret
+
+    def slot_num_to_sn(self):
+        ret = {}
+        for dev in self.dev_list.devices:
+            path_info = dev.path.split(',')
+            if len(path_info) == 2:
+                ret.setdefault(path_info[1], dev.serial)
         return ret
 
     def get_raid_info(self):
@@ -193,9 +202,6 @@ class Tools(object):
             ret['adapters'][ld_info['adapter_id']]['lds'][ld_id] = ld_info
 
         return ret
-
-    def all_info(self):
-
 
 
 tools = Tools()
