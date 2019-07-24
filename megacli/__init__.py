@@ -378,6 +378,8 @@ class MegaCLI:
       if len(adapter):
         ret.append(adapter)
 
+
+
     return ret
 
   def create_ld(self, raid_level, devices, adapter, write_policy = None, read_policy = None, cache_policy = None, cached_bad_bbu = None, size = None, stripe_size = None, hot_spares = [], after_ld = None, force = False):
