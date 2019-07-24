@@ -171,7 +171,15 @@ class Tools(object):
                 ret.setdefault(int(path_info[1]), dev.serial)
         return ret
 
-    def get_raid_info(self):
+    def sn_to_device_id(self):
+        ret = {}
+        for dev in self.dev_list.devices:
+            path_info = dev.interface.split(',')
+            if len(path_info) == 2:
+                ret.setdefault(dev.serial, int(path_info[1]))
+        return ret
+
+    def raid_info(self):
         ret = {
             'adapters': self.adp_info()['adps']
         }
