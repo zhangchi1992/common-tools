@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import json
 import os
 import re
 from megacli import MegaCLI
@@ -14,11 +13,9 @@ class Tools(object):
 
     def adp_info(self):
         ret = {
-            'num': '',
             'adps': {},
         }
         adps = self.cli.adapters()
-        ret['num'] = len(adps)
         for adp in adps:
             pci_path = self.__get_adp_pci_info(adp['id'])
             ret['adps'][adp['id']] = {
@@ -31,12 +28,10 @@ class Tools(object):
 
     def pd_info(self):
         ret = {
-            'num': '',
             'pds': {},
         }
         drives = self.cli.physicaldrives()
-        ret['num'] = len(drives)
-        slot_num_to_sn = self.slot_num_to_sn()
+        device_id_to_sn = self.device_id_to_sn()
         for drive in drives:
             ret['pds'][drive['device_id']] = {
                 'firmware_state': drive['firmware_state'],
@@ -46,17 +41,15 @@ class Tools(object):
                 'media_type': drive['media_type'],
                 'path': self.get_pd_path(drive),
                 'ld_id': self.get_pd_raid_info(drive),
-                'serial': slot_num_to_sn.get(drive['slot_number']),
+                'serial': device_id_to_sn.get(drive['device_id']),
             }
         return ret
 
     def ld_info(self):
         ret = {
-            'num': '',
             'lds': {},
         }
         drives = self.cli.logicaldrives()
-        ret['num'] = len(drives)
         for drive in drives:
             ret['lds'][drive['id']] = {
                 'adapter_id': drive['adapter_id'],
@@ -146,7 +139,6 @@ class Tools(object):
 
     def device_info(self):
         ret = {
-            'num': '',
             'devices': {},
         }
         for dev in self.dev_list.devices:
@@ -171,12 +163,12 @@ class Tools(object):
                 }
         return ret
 
-    def slot_num_to_sn(self):
+    def device_id_to_sn(self):
         ret = {}
         for dev in self.dev_list.devices:
-            path_info = dev.path.split(',')
+            path_info = dev.interface.split(',')
             if len(path_info) == 2:
-                ret.setdefault(path_info[1], dev.serial)
+                ret.setdefault(int(path_info[1]), dev.serial)
         return ret
 
     def get_raid_info(self):
