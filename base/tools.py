@@ -67,9 +67,9 @@ class Tools(object):
             if pci_path:
                 if drive.get('firmware_state') in ['jbod']:
                     disk_prefix = str('/dev/disk/by-path/pci-' + pci_path + '-scsi-0:0:')
-                    diskpath = disk_prefix + str(drive['device_id']) + ':0'
-                    if os.path.exists(diskpath):
-                        pd_path = os.path.realpath(diskpath)
+                    disk_path = disk_prefix + str(drive['device_id']) + ':0'
+                    if os.path.exists(disk_path):
+                        pd_path = os.path.realpath(disk_path)
                     else:
                         pd_path = 'N/A'
         return pd_path
@@ -202,6 +202,38 @@ class Tools(object):
             ret['adapters'][ld_info['adapter_id']]['lds'][ld_id] = ld_info
 
         return ret
+
+    def get_failed_disk(self):
+        ret = {
+            'failed_disks': {},
+        }
+        devices = self.device_info().get('devices')
+        for sn, info in devices:
+            failed_attr = {}
+            for num, attr in info.get('attributes'):
+                if attr.get('when_failed') in ['FAILING_NOW', 'In_the_past']:
+                    failed_attr[num] = {
+                        'name': attr.name,
+                        'value': attr.value,
+                        'worst': attr.worst,
+                        'thresh': attr.thresh,
+                        'type': attr.type,
+                        'updated': attr.updated,
+                        'when_failed': attr.when_failed,
+                        'raw': attr.raw,
+                    }
+            if info.get('assessment') == 'FAILED' or len(failed_attr.keys()) > 0:
+                ret['failed_disks'][sn] = {
+                    'assessment': info.get('assessment'),
+                    'failed_attr': failed_attr,
+                }
+        return ret
+
+    def search_disk(self, sn):
+        sn_to_id = self.sn_to_device_id()
+        device_id = sn_to_id.get(sn)
+        pd_info = self.pd_info()['pds']
+        return pd_info.get(device_id)
 
 
 tools = Tools()
