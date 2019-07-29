@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+import sys
+sys.path.append("..")
+
 from base.tools import tools
 from prettytable import PrettyTable
 
-adp_info = tools.adp_info()['adapters']
+adp_info = tools.adp_info()['adps']
 adapters_table = PrettyTable()
 adapters_table.field_names = ['ID', 'virtual_drives', 'physical_devices']
 for adp_id, info in adp_info.iteritems():
