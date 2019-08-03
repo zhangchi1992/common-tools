@@ -8,5 +8,4 @@ setup(
     author_email='zhangchi@yunify.com',
     packages=find_packages('.'),
     scripts=['bin/disktool'],
-    namespace_packages=['qingcloud'],
 )
