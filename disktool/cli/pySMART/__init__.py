@@ -32,7 +32,7 @@ The most common way to use pySMART is to create a logical representation of the
 physical storage device that you would like to work with, as shown:
 
     #!bash
-    >>> from pySMART import Device
+    >>> from disktool.pySMART import Device
     >>> sda = Device('/dev/sda')
     >>> sda
     <SATA device on /dev/sda mod:WDC WD5000AAKS-60Z1A0 sn:WD-WCAWFxxxxxxx>
@@ -69,7 +69,7 @@ this will auto-detect all local storage devices and create a list containing
 one `Device` object for each detected storage device.
 
     #!bash
-    >>> from pySMART import DeviceList
+    >>> from disktool.pySMART import DeviceList
     >>> devlist = DeviceList()
     >>> devlist
     <DeviceList contents:

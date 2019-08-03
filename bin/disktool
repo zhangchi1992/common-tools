@@ -1,0 +1,8 @@
+import sys
+import disktool.cli.driver
+
+def main():
+    return disktool.cli.driver.main()
+
+if __name__ == '__main__':
+    sys.exit(main())

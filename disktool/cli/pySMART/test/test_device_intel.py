@@ -285,7 +285,7 @@ class TestDeviceWithIntel:
         """
         This test is to ensure that the parse can be executed without exception.
         """
-        from pySMART.device import Device
+        from disktool.cli.pySMART.device import Device
         with nested(
             mock.patch.object(
                 Device,

@@ -2,11 +2,11 @@
 
 import os
 import re
-from megacli import MegaCLI
-from pySMART import DeviceList
+from disktool.cli.megacli import MegaCLI
+from disktool.cli.pySMART import DeviceList
 
 
-class Tools(object):
+class DiskInfo(object):
     def __init__(self):
         self.cli = MegaCLI()
         self.dev_list = DeviceList()
@@ -233,7 +233,7 @@ class Tools(object):
         sn_to_id = self.sn_to_device_id()
         device_id = sn_to_id.get(sn)
         pd_info = self.pd_info()['pds']
-        return pd_info.get(device_id)
+        return device_id, pd_info.get(device_id)
 
 
-tools = Tools()
+diskinfo = DiskInfo()
