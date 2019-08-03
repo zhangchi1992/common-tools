@@ -4,6 +4,9 @@ from prettytable import PrettyTable
 
 def search_from_sn(sn):
     device_id, info = diskinfo.search_disk(sn)
+    if not device_id:
+        print 'sn:{sn} disk not found'.format(sn=sn)
+        return
     pds_table = PrettyTable()
     pds_table.field_names = ['ID', 'pd_type', 'media_type', 'firmware_state', 'path', 'serial', 'slot_number']
     id_info = 'a{adapter_id}l{ld_id}p{device_id}'.format(adapter_id=info.get('adapter_id'), ld_id=info.get('ld_id'),

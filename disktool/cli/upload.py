@@ -12,7 +12,7 @@ class Upload(BaseAction):
 
     @classmethod
     def add_ext_arguments(cls, parser):
-        parser.add_argument('-', '--url', dest='url',
+        parser.add_argument('-u', '--url', dest='url',
                             action='store', type=str, default='',
                             help='request url')
 
@@ -23,7 +23,7 @@ class Upload(BaseAction):
     @classmethod
     def build_directive(cls, options):
         return {
-            'list_element': explode_array(options.list_element),
+            'url': explode_array(options.url),
         }
 
     @classmethod

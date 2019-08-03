@@ -18,7 +18,7 @@ class Show(BaseAction):
 
     action = 'Show'
     command = 'show'
-    usage = '%(prog)s [options] \n\n' + 'Here are valid actions:\n\n' +  "\n".join(show_list.keys())
+    usage = '%(prog)s [options] \n\n' + 'Here are valid options:\n' + "\n".join(show_list.keys())
 
     @classmethod
     def add_ext_arguments(cls, parser):
