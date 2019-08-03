@@ -2,3 +2,6 @@
 venv/
 *.pyg
 *.pyc
+build/
+dist/
+disktool.egg-info/
