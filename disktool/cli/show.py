@@ -6,9 +6,7 @@ from utils.show_info import show_adps, show_lds, show_pds, show_configured_disk,
 
 
 class Show(BaseAction):
-    action = 'Show'
-    command = 'show'
-    usage = '%(prog)s [options]'
+
     show_list = {
         'adp': show_adps,
         'ld': show_lds,
@@ -17,6 +15,10 @@ class Show(BaseAction):
         'ud': show_unconfigured_disk,
         'fd': show_failed_disk,
     }
+
+    action = 'Show'
+    command = 'show'
+    usage = '%(prog)s [options] \n\n' + 'Here are valid actions:\n\n' +  "\n".join(show_list.keys())
 
     @classmethod
     def add_ext_arguments(cls, parser):
@@ -37,9 +39,7 @@ class Show(BaseAction):
             cls.show_list['adp']()
             cls.show_list['ld']()
             cls.show_list['pd']()
-            return
+        elif list_element in cls.show_list.keys():
+            cls.show_list.get(list_element)()
 
-        cls.show_list.get(list_element)()
-
-        return
 

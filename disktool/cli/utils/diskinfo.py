@@ -208,9 +208,9 @@ class DiskInfo(object):
             'failed_disks': {},
         }
         devices = self.device_info().get('devices')
-        for sn, info in devices:
+        for sn, info in devices.iteritems():
             failed_attr = {}
-            for num, attr in info.get('attributes'):
+            for num, attr in info.get('attributes').iteritems():
                 if attr.get('when_failed') in ['FAILING_NOW', 'In_the_past']:
                     failed_attr[num] = {
                         'name': attr.name,
