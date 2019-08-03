@@ -2,12 +2,14 @@ import sys
 import argparse
 from difflib import get_close_matches
 
-from show_raid import show
+from show import Show
+from search import Search
+from upload import Upload
 
 ACTIONS = {
-    'show': show,
-    'search': search,
-    'upload': upload,
+    'show': Show,
+    'search': Search,
+    'upload': Upload,
 }
 
 INDENT = ' ' * 2
@@ -49,4 +51,4 @@ def main():
     args = sys.argv
     check_argument(args)
     action = get_action(args[1])
-    action(args[2:])
+    action.main(args[2:])
