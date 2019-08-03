@@ -12,19 +12,19 @@ class Search(BaseAction):
 
     @classmethod
     def add_ext_arguments(cls, parser):
-        parser.add_argument('-d', '--disk', dest='disk_sn',
+        parser.add_argument('-s', '--serial_number', dest='sn',
                             action='store', type=str, default='',
                             help='search disk from sn')
 
     @classmethod
     def build_directive(cls, options):
         return {
-            'list_element': explode_array(options.list_element),
+            'sn': explode_array(options.sn),
         }
 
     @classmethod
     def do_action(cls, options):
-        disk_sn = options.disk_sn
-        search_from_sn(disk_sn)
+        sn = options.sn
+        search_from_sn(sn)
 
 

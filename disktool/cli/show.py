@@ -39,8 +39,7 @@ class Show(BaseAction):
             cls.show_list['pd']()
             return
 
-        for element in list_element:
-            cls.show_list.get(element)()
+        cls.show_list.get(list_element)()
 
         return
 

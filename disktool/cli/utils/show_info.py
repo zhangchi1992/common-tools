@@ -31,16 +31,16 @@ def show_pds():
     u_pds_table.field_names = ['ID', 'pd_type', 'media_type', 'firmware_state', 'path', 'serial', 'slot_number']
     for device_id, info in pds_info.iteritems():
         if info.get('ld_id') not in ['Unconfigured']:
-            id_info = 'a{adapter_id}l{ld_id}p{device_id}'.format(adapter_id=info.get('adapter_id'),
+            id_info = 'a{adapter_id}l{ld_id}d{device_id}'.format(adapter_id=info.get('adapter_id'),
                                                              ld_id=info.get('ld_id'), device_id=device_id)
             pds_table.add_row([id_info, info.get('pd_type'), info.get('media_type'), info.get('firmware_state'),
                                info.get('path'), info.get('serial'), info.get('slot_number')])
         else:
-            id_info = 'a{adapter_id}p{device_id}'.format(adapter_id=info.get('adapter_id'), device_id=device_id)
+            id_info = 'a{adapter_id}d{device_id}'.format(adapter_id=info.get('adapter_id'), device_id=device_id)
             u_pds_table.add_row([id_info, info.get('pd_type'), info.get('media_type'), info.get('firmware_state'),
                                  info.get('path'), info.get('serial'), info.get('slot_number')])
 
-    print '-- Physical Disk Information --'
+    print '-- Configured Physical Disk Information --'
     print pds_table
     print '-- Unconfigured Physical Disk Information --'
     print u_pds_table
@@ -52,7 +52,7 @@ def show_configured_disk():
     pds_table.field_names = ['ID', 'pd_type', 'media_type', 'firmware_state', 'path', 'serial', 'slot_number']
     for device_id, info in pds_info.iteritems():
         if info.get('ld_id') not in ['Unconfigured']:
-            id_info = 'a{adapter_id}l{ld_id}p{device_id}'.format(adapter_id=info.get('adapter_id'),
+            id_info = 'a{adapter_id}l{ld_id}d{device_id}'.format(adapter_id=info.get('adapter_id'),
                                                              ld_id=info.get('ld_id'), device_id=device_id)
             pds_table.add_row([id_info, info.get('pd_type'), info.get('media_type'), info.get('firmware_state'),
                                info.get('path'), info.get('serial'), info.get('slot_number')])
@@ -67,7 +67,7 @@ def show_unconfigured_disk():
     u_pds_table.field_names = ['ID', 'pd_type', 'media_type', 'firmware_state', 'path', 'serial', 'slot_number']
     for device_id, info in pds_info.iteritems():
         if info.get('ld_id') in ['Unconfigured']:
-            id_info = 'a{adapter_id}p{device_id}'.format(adapter_id=info.get('adapter_id'), device_id=device_id)
+            id_info = 'a{adapter_id}d{device_id}'.format(adapter_id=info.get('adapter_id'), device_id=device_id)
             u_pds_table.add_row([id_info, info.get('pd_type'), info.get('media_type'), info.get('firmware_state'),
                                  info.get('path'), info.get('serial'), info.get('slot_number')])
     print '-- Unconfigured Physical Disk Information --'
