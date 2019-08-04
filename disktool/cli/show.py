@@ -41,5 +41,7 @@ class Show(BaseAction):
             cls.show_list['pd']()
         elif list_element in cls.show_list.keys():
             cls.show_list.get(list_element)()
+        else:
+            print cls.usage
 
 

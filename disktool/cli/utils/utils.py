@@ -24,7 +24,7 @@ def metric_format(metric, prefix=''):
 
 
 def metric_print(metric, prefix=''):
-    print(metric_format(metric, prefix))
+    return metric_format(metric, prefix)
 
 
 def metric_print_smart_meta(metric, prefix=''):
