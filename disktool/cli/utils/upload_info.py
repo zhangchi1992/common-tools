@@ -12,7 +12,7 @@ from diskinfo import diskinfo
 
 def upload_to_url(url, timeout):
     headers = {'Content-Type': 'application/json'}
-    failed_disk = diskinfo.get_failed_disk()
+    failed_disk = diskinfo.raid_info()
     request = urllib2.Request(url=url, headers=headers, data=json.dumps(failed_disk))
     try:
         urllib2.urlopen(request, timeout=timeout)
