@@ -1,7 +1,8 @@
 import sys
 import argparse
-from difflib import get_close_matches
+import pkg_resources
 
+from difflib import get_close_matches
 from show import Show
 from search import Search
 from upload import Upload
@@ -40,6 +41,11 @@ def get_action(action):
 def check_argument(args):
     if len(args) < 2:
         exit_due_to_invalid_action()
+
+    if args[1].lower() in ('--version', '-v'):
+        version = pkg_resources.require("disktool")[0].version
+        print('disktool version %s' % version)
+        sys.exit(0)
 
     action = args[1]
     if action not in ACTIONS.keys():

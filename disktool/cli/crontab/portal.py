@@ -18,10 +18,9 @@ class FLOCK(object):
 
 if __name__ == "__main__":
     url = 'http://www.baidu.com'
-    locker = FLOCK('.prometheus')
+    locker = FLOCK('.portal')
     flag = locker.lock()
     if flag:
-        subprocess.Popen(['disktool', 'upload', '-d', 'prometheus'])
+        subprocess.Popen(['disktool', 'upload', '-u', url])
     else:
         sys.exit(0)
-

@@ -2,7 +2,7 @@
 
 from base import BaseAction
 from utils.utils import explode_array
-from utils.upload_info import upload_failed_disk
+from utils.upload_info import upload_to_url, upload_to_promether
 
 
 class Upload(BaseAction):
@@ -12,7 +12,7 @@ class Upload(BaseAction):
 
     @classmethod
     def add_ext_arguments(cls, parser):
-        parser.add_argument('-u', '--url', dest='url',
+        parser.add_argument('-d', '--destination', dest='destination',
                             action='store', type=str, default='',
                             help='request url')
 
@@ -23,14 +23,17 @@ class Upload(BaseAction):
     @classmethod
     def build_directive(cls, options):
         return {
-            'url': explode_array(options.url),
+            'destination': explode_array(options.destination),
         }
 
     @classmethod
     def do_action(cls, options):
-        url = options.url
+        destination = options.destination
         timeout = options.timeout
-        upload_failed_disk(url, timeout)
+        if 'prometheus' in destination:
+            upload_to_promether()
+        else:
+            upload_to_url(destination, timeout)
 
 
 
