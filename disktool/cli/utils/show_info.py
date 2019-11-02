@@ -76,9 +76,22 @@ def show_unconfigured_disk():
 
 def show_failed_disk():
     failed_disk = diskinfo.get_failed_disk()['failed_disks']
-    for sn, info in failed_disk.iteritems():
+    attr_err = failed_disk.get('attr')
+    state_err = failed_disk.get('state')
+    for sn, info in attr_err.iteritems():
         print '-- Disk sn: {sn}, Assessment: {assessment} --'.format(sn=sn, assessment=info.get('assessment'))
         disk_table = PrettyTable()
-        disk_table.field_names = ['id', 'name', 'type', 'when_failed']
-        disk_table.add_row([info.get('id'), info.get('name'), info.get('type'), info.get('when_failed')])
+        disk_table.field_names = ['num', 'name', 'type', 'when_failed']
+        for num, attr in info.get('failed_attr', {}).iteritems():
+            disk_table.add_row([num, attr.get('name'), attr.get('type'), attr.get('when_failed')])
         print disk_table
+
+    for device_id, info in state_err.iteritems():
+        print '-- Adapter: {adapter_id}, Device: {device_id}, firmware_state: {firmware_state} --'.\
+            format(adapter_id=info.get('adapter_id'), device_id=device_id, firmware_state=info.get('firmware_state'))
+        disk_table = PrettyTable()
+        disk_table.field_names = ['ID', 'pd_type', 'media_type', 'firmware_state', 'slot_number']
+        id_info = 'a{adapter_id}d{device_id}'.format(adapter_id=info.get('adapter_id'), device_id=device_id)
+        disk_table.add_row([id_info, info.get('pd_type'), info.get('media_type'),
+                            info.get('firmware_state'), info.get('slot_number')])
+

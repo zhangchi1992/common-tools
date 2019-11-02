@@ -205,7 +205,10 @@ class DiskInfo(object):
 
     def get_failed_disk(self):
         ret = {
-            'failed_disks': {},
+            'failed_disks': {
+                'attr': {},
+                'state': {},
+            },
         }
         devices = self.device_info().get('devices')
         for sn, info in devices.iteritems():
@@ -222,10 +225,22 @@ class DiskInfo(object):
                         'when_failed': attr.when_failed,
                         'raw': attr.raw,
                     }
-            if info.get('assessment') == 'FAILED' or len(failed_attr.keys()) > 0:
-                ret['failed_disks'][sn] = {
+            if info.get('assessment') == 'FAIL' or len(failed_attr.keys()) > 0:
+                ret['failed_disks']['attr'][sn] = {
                     'assessment': info.get('assessment'),
                     'failed_attr': failed_attr,
+                }
+
+        pd_info = self.pd_info()['pds']
+        normal_state = ['online,spunup', 'unconfigured(good),spundown', 'hotspare,spunup', 'jbod']
+        for device_id, info in pd_info.iteritems():
+            if info.get('firmware_state').lower().replace(' ', '') not in normal_state:
+                ret['failed_disks']['state'][device_id] = {
+                    'firmware_state': info.get('firmware_state'),
+                    'adapter_id': info.get('adapter_id'),
+                    'slot_number': info.get('slot_number'),
+                    'pd_type': info.get('pd_type'),
+                    'media_type': info.get('media_type'),
                 }
         return ret
 
